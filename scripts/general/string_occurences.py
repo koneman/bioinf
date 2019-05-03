@@ -14,19 +14,20 @@ def read_input(filename):
     file = open(data + "/" + filename, "r")
     return file.read()
 
-def write_to_file(output, s):
+def find_pattern(input_dna, pattern):
+	index = list()
+	for i in range(len(input_dna) - len(pattern)):
+		if input_dna[i:i+len(pattern)] == pattern:
+			index.append(i)
+	return index
+
+def write_to_file(output, idx_arr):
+	s=' '.join([str(pos) for pos in idx_arr])
 	data = os.path.abspath(__file__ + "/../../../data")
-	with open(data + "/" + output, "a") as file:
+	with open(data + "/" + output, "w") as file:
 		file.write(s)
 
-def reverse(s):
-	return s[::-1]
-
-def rev_complement(input_dna):
-	dna_list = list(input_dna)
-	return reverse("".join(comp_dict.get(nuc, nuc) for nuc in dna_list))
-
 if __name__ == "__main__":
-	dna = read_input("dna_seq.txt")
-	comp_dna = rev_complement(dna)
-	write_to_file("rev_comp.txt", comp_dna)
+	dna = read_input("Vibrio_cholerae.txt")
+	pattern = "CTTGATCAT"
+	write_to_file("cholarae_idx.txt", find_pattern(dna, pattern))
